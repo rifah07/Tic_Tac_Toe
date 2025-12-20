@@ -43,24 +43,30 @@ module TicTacToe
       @board[position] = player.marker
     end
 
-    def player_has_won?
-
+    def player_has_won?(player)
+      LINES.any? do |line|
+        line.all? {|position| @board[position] == player.marker}
+      end
     end
 
     def board_full?
-
+      free_positions.empty?
     end
 
     def other_player_id
-
+      1 - @current_player_id
     end
 
     def switch_players!
+      @current_player_id = other_player_id
+    end
 
+    def current_player
+      @players[current_player_id]
     end
 
     def select_position!
-
+      
     end
   end
 end
