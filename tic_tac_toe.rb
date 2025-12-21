@@ -34,7 +34,7 @@ module TicTacToe
     end
 
     def free_positions
-      (1..9).select {|position| @board[position].nil?}
+      (1..9).select { |position| @board[position].nil? }
     end
 
     def place_player_marker(player)
@@ -45,7 +45,7 @@ module TicTacToe
 
     def player_has_won?(player)
       LINES.any? do |line|
-        line.all? {|position| @board[position] == player.marker}
+        line.all? { |position| @board[position] == player.marker }
       end
     end
 
@@ -65,8 +65,23 @@ module TicTacToe
       @players[current_player_id]
     end
 
-    def select_position!
-      
+    def opponent
+      @players[other_player_id]
+    end
+
+    def turn_num
+      10 - free_positions.length
+    end
+
+    def print_board
+      col_separator = ' | '
+      row_separator = '--+---+--'
+      label_for_position = ->(position){ @board[position] ? @board[position] : position }
+
+      row_for_display = ->(row){ row.map(&label_for_position).join(col_separator) }
+      row_positions = [[1,2,3], [4,5,6], [7,8,9]]
+      rows_for_display = row_positions.map(&row_for_display)
+      puts rows_for_display.join("\n#{row_separator}\n")
     end
   end
 end
