@@ -84,4 +84,12 @@ module TicTacToe
       puts rows_for_display.join("\n#{row_separator}\n")
     end
   end
+
+  class Player
+    def initialize(game, marker)
+      @game = game
+      @marker = marker
+    end
+    attr_reader :marker
+  end
 end
