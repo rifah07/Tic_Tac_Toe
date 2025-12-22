@@ -6,11 +6,11 @@ module TicTacToe
   # This is Game class
   class Game
     def initialize(player_1_class, player_2_class)
-      @board = Array.new(10)
+      @board = Array.new(10, nil)
 
       @current_player_id = 0
       @players = [player_1_class.new(self, 'X'), player_2_class.new(self, 'O')]
-      puts "#{@current_player} goes first"
+      puts "#{current_player} goes first"
     end
 
     attr_reader :board, :current_player_id
@@ -126,7 +126,7 @@ module TicTacToe
     def select_position!
       opponent_marker = @game.opponent.marker
 
-      winning_or_blocking_position = look_for_winning_or_blocking_position(opponent_marker)
+      winning_or_blocking_position = self.look_for_winning_or_blocking_position(opponent_marker)
       return winning_or_blocking_position if winning_or_blocking_position
 
       return corner_trap_defense_position(opponent_marker) if corner_trap_defense_needed?
@@ -137,22 +137,22 @@ module TicTacToe
     end
 
     def look_for_winning_or_blocking_position(opponent_marker)
-      LINES.each { |line|
+      blocking_position = nil
+      LINES.each do |line|
         markers = group_positions_by_markers(line)
         next if markers[nil].length != 1
 
-        if markers[self.marker].length == 2
+        if markers[marker].length == 2
           log_debug "winning on line #{line.join}"
           return markers[nil].first
         elsif markers[opponent_marker].length == 2
           log_debug "could block on line #{line.join}"
           blocking_position = markers[nil].first
         end
-      }
-      if blocking_position
-        log_debug "blocking at #{blocking_position}"
-        blocking_position
       end
+
+      log_debug "blocking at #{blocking_position}" if blocking_position
+      blocking_position
     end
 
     def corner_trap_defense_needed?
@@ -186,3 +186,10 @@ module TicTacToe
     end
   end
 end
+
+include TicTacToe
+
+Game.new(ComputerPlayer, ComputerPlayer).play
+puts
+players_with_human = [HumanPlayer, ComputerPlayer].shuffle
+Game.new(*players_with_human).play
