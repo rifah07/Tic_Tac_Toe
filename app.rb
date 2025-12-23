@@ -54,7 +54,7 @@ module TicTacToe
       (1..9).select { |position| @board[position].nil? }
     end
 
-    def place_marker?(position, marker)
+    def place_marker(position, marker)
       return false unless free_positions.include?(position)
 
       @board[position] = marker
@@ -159,13 +159,13 @@ post '/api/move/:position' do
   position = params[:position].to_i
 
   if game.free_positions.include?(position)
-    game.place_marker?(position, 'X')
+    game.place_marker(position, 'X')
 
     unless game.player_has_won?('X') || game.board_full?
       ai_pos = TicTacToe::ComputerPlayer
                .new(game, 'O')
                .select_position!
-      game.place_marker?(ai_pos, 'O')
+      game.place_marker(ai_pos, 'O')
     end
   end
 
