@@ -17,7 +17,7 @@
 
 
 ## 🚀 Live Demo
-[Play Now →](https://your-app.onrender.com)
+[Play Now →](https://tic-tac-toe-wwov.onrender.com/)
 
 ## 🎯 How to Play
 1. Click **New Game**
